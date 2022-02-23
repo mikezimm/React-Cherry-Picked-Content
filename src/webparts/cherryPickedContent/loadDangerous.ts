@@ -9,12 +9,14 @@ const iframePref = ``;
 const iframeSuff = "";
 const noContent = "<div>No content loaded.</div>";
 
-export async function fetchSnippet( url: string ,  ctx : any ) {
+export async function fetchSnippet( context: any, webUrl: string, libraryPicker: string , libraryItemPicker: string ) {
+
+    let fileURL = libraryPicker + "/" + libraryItemPicker;
 
     // https://mcclickster.sharepoint.com/sites/PivotNotInstalled/SiteAssets/Forms/AllItems.aspx
     const tenantCDN = `TestScriptandFiles`;
     let snippetURL = `${window.location.origin}/sites/${tenantCDN}/`;
-    snippetURL += `_api/web/getFileByServerRelativeUrl('${url}')/$value`;
+    snippetURL += `_api/web/getFileByServerRelativeUrl('${fileURL}')/$value`;
 
     console.log('fetchSnippet url:', snippetURL );
     // const snippetURL = `https://tenant.sharepoint.com/sites/cdn/_api/web/getFileByServerRelativeUrl('${props.url}')/$value`;
