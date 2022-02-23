@@ -20,6 +20,7 @@ import { approvedLibraries } from './components/ApprovedLibraries';
 
 import { fetchSnippet } from './loadDangerous';
 import { fetchSnippetMike } from './components/FetchCode';
+import { executeScript } from './components/EvalScripts';
 
 export interface ICherryPickedContentWebPartProps {
   description: string;
@@ -61,6 +62,7 @@ export default class CherryPickedContentWebPart extends BaseClientSideWebPart<IC
     );
 
     ReactDom.render(element, this.domElement);
+
   }
 
   private _getEnvironmentMessage(): string {

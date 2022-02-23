@@ -9,13 +9,8 @@ import { executeScript } from './EvalScripts';
 
 const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = (props) => {
 
-  // const message = props.libraryItemPicker? "Loading...":"Edit Web Part properties to select a file.";
-  // const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
-  const stockPickerHTML = '<div class="tradingview-widget-container"><div id="tradingview"></div><div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div><script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>      <script type="text/javascript">      new TradingView.widget(      {      "width": 980,      "height": 610,      "symbol": "NASDAQ:AAPL",      "interval": "D",      "timezone": "Etc/UTC",      "theme": "light",      "style": "1",      "locale": "en",      "toolbar_bg": "#f1f3f6",      "enable_publishing": false,      "allow_symbol_change": true,"container_id": "tradingview"});</script></div>'
   const message = props.libraryItemPicker? "Loading...":"Edit Web Part properties to select a file.";
-  // const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
-  // const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
-  const defaultNode = document.createRange().createContextualFragment(stockPickerHTML);
+  const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
 
   const [appendedNode, setAppendedNode] = React.useState(defaultNode);
 
@@ -42,14 +37,33 @@ const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = 
         // : "<div>No content loaded.</div>";
         const node = document.createRange().createContextualFragment(props.snippet);
         setAppendedNode(node);
-
       }
       else {
         setAppendedNode(defaultNode);
       }
     }
     fetchSnippet();
-    // executeScript( props.context.domElement )
+    /**
+     * I think we just need to execute Script code here....
+     * https://daveceddia.com/react-hook-after-render/
+     */
+     console.log('props.domElement:', props.domElement );
+     /**
+      * We have to pass in the actual element with the fragment into executeScript
+      * This might help give a clue what we need to do
+      * https://javascript.tutorialink.com/how-to-get-actual-element-from-document-fragment/
+      */
+     //This did not work... scriptElement was undefined here
+     // let scriptElement = document.getElementById("thisReallyUniqueId");
+ 
+     //This did not work.... scriptElement was </section>
+     // let scriptElement = props.domElement.firstElementChild ;
+ 
+     //This also did not work because at the time of running it, it was using the defalultNode
+     let scriptElement = props.domElement.firstElementChild.firstElementChild ;
+     console.log('scriptElement:', scriptElement );
+     executeScript( scriptElement );
+     
   }, [props.libraryPicker, props.libraryItemPicker]);
 
   return (
