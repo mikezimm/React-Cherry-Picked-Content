@@ -9,8 +9,10 @@ import { executeScript } from './EvalScripts';
 
 const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = (props) => {
 
+  const stockPickerHTML = '<div class="tradingview-widget-container"><div id="tradingview"></div><div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div><script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>      <script type="text/javascript">      new TradingView.widget(      {      "width": 980,      "height": 610,      "symbol": "NASDAQ:AAPL",      "interval": "D",      "timezone": "Etc/UTC",      "theme": "light",      "style": "1",      "locale": "en",      "toolbar_bg": "#f1f3f6",      "enable_publishing": false,      "allow_symbol_change": true,"container_id": "tradingview"});</script></div>'
   const message = props.libraryItemPicker? "Loading...":"Edit Web Part properties to select a file.";
-  const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
+  // const defaultNode = document.createRange().createContextualFragment("<div><h3>" + message + "</h3></div>");
+  const defaultNode = document.createRange().createContextualFragment(stockPickerHTML);
 
   const [appendedNode, setAppendedNode] = React.useState(defaultNode);
 
@@ -21,25 +23,29 @@ const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = 
       let filteredApprovedLibraries = props.approvedLibraries.filter(lib => lib.key == props.libraryPicker);
       if ((filteredApprovedLibraries.length > 0) && (props.libraryItemPicker)) {
 
-        let fileURL = props.libraryPicker + "/" + props.libraryItemPicker;
+        // let fileURL = props.libraryPicker + "/" + props.libraryItemPicker;
 
-        const webURLQuery = props.context.pageContext.web.absoluteUrl + `/_api/sp.web.getweburlfrompageurl(@v)?@v=%27${window.location.origin}${fileURL}%27`;
+        // const webURLQuery = props.context.pageContext.web.absoluteUrl + `/_api/sp.web.getweburlfrompageurl(@v)?@v=%27${window.location.origin}${fileURL}%27`;
 
-        // if (props.url)
-        // const htmlFragment: string = (props.url) ?
-        let webURL = await props.context.spHttpClient.get(webURLQuery, SPHttpClient.configurations.v1)
-          .then((response: SPHttpClientResponse) => response.json())
-          .then(data => data.value);
-        const snippetURLQuery = webURL + `/_api/web/getFileByServerRelativeUrl('${fileURL}')/$value`;
+        // // if (props.url)
+        // // const htmlFragment: string = (props.url) ?
+        // let webURL = await props.context.spHttpClient.get(webURLQuery, SPHttpClient.configurations.v1)
+        //   .then((response: SPHttpClientResponse) => response.json())
+        //   .then(data => data.value);
+        // const snippetURLQuery = webURL + `/_api/web/getFileByServerRelativeUrl('${fileURL}')/$value`;
 
-        const htmlFragment = await props.context.spHttpClient.get(snippetURLQuery, SPHttpClient.configurations.v1)
-          .then((response: SPHttpClientResponse) => response.text());
-        // : "<div>No content loaded.</div>";
-        const newHtml = `<div id='thisReallyUniqueId'>${htmlFragment}<div>`;
-        const node = document.createRange().createContextualFragment(newHtml);
+        // const htmlFragment = await props.context.spHttpClient.get(snippetURLQuery, SPHttpClient.configurations.v1)
+        //   .then((response: SPHttpClientResponse) => response.text());
+        // // : "<div>No content loaded.</div>";
+        // const newHtml = `<div id='thisReallyUniqueId'>${htmlFragment}<div>`;
+
+        console.log('fetchSnippet 1: props.snippet', props.snippet );
+        const node = document.createRange().createContextualFragment(props.snippet);
         setAppendedNode(node);
       }
       else {
+        console.log('fetchSnippet 2: props.snippet', props.snippet );
+        const node = document.createRange().createContextualFragment(props.snippet);
         setAppendedNode(defaultNode);
       }
     }

@@ -18,6 +18,9 @@ import { update } from '@microsoft/sp-lodash-subset';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { approvedLibraries } from './components/ApprovedLibraries';
 
+import { fetchSnippet } from './loadDangerous';
+import { fetchSnippetMike } from './components/FetchCode';
+
 export interface ICherryPickedContentWebPartProps {
   description: string;
   libraryPicker: string;
@@ -28,14 +31,18 @@ export default class CherryPickedContentWebPart extends BaseClientSideWebPart<IC
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
+  private snippet: string = '';
 
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
-
     return super.onInit();
   }
 
-  public render(): void {
+  // public render(): void {
+  public async render(){
+    // if ( this.snippet === '' ) {
+    this.snippet = await fetchSnippetMike( this.context, '', this.properties.libraryPicker, this.properties.libraryItemPicker );
+    // }
     const element: React.ReactElement<ICherryPickedContentProps> = React.createElement(
       CherryPickedContent,
       {
@@ -49,6 +56,7 @@ export default class CherryPickedContentWebPart extends BaseClientSideWebPart<IC
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         domElement: this.domElement,
+        snippet: this.snippet,
       }
     );
 
