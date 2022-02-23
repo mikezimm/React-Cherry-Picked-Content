@@ -1,38 +1,38 @@
-import * as React from 'react';
+// import * as React from 'react';
 
-import {SPHttpClient, SPHttpClientResponse} from '@microsoft/sp-http';
+// import {SPHttpClient, SPHttpClientResponse} from '@microsoft/sp-http';
 
-// const iframePref = "<iframe width='100%' height='100vh' srcdoc='";
-// const iframePref = `<iframe width='100%' height='${window.innerHeight}' srcdoc='`;
-// const iframeSuff = "\'</iframe>";
-const iframePref = ``;
-const iframeSuff = "";
-const noContent = "<div>No content loaded.</div>";
+// // const iframePref = "<iframe width='100%' height='100vh' srcdoc='";
+// // const iframePref = `<iframe width='100%' height='${window.innerHeight}' srcdoc='`;
+// // const iframeSuff = "\'</iframe>";
+// const iframePref = ``;
+// const iframeSuff = "";
+// const noContent = "<div>No content loaded.</div>";
 
-export async function fetchSnippet( context: any, webUrl: string, libraryPicker: string , libraryItemPicker: string ) {
+// export async function fetchSnippet( context: any, webUrl: string, libraryPicker: string , libraryItemPicker: string ) {
 
-    let fileURL = libraryPicker + "/" + libraryItemPicker;
+//     let fileURL = libraryPicker + "/" + libraryItemPicker;
 
-    // https://mcclickster.sharepoint.com/sites/PivotNotInstalled/SiteAssets/Forms/AllItems.aspx
-    const tenantCDN = `TestScriptandFiles`;
-    let snippetURL = `${window.location.origin}/sites/${tenantCDN}/`;
-    snippetURL += `_api/web/getFileByServerRelativeUrl('${fileURL}')/$value`;
+//     // https://mcclickster.sharepoint.com/sites/PivotNotInstalled/SiteAssets/Forms/AllItems.aspx
+//     const tenantCDN = `TestScriptandFiles`;
+//     let snippetURL = `${window.location.origin}/sites/${tenantCDN}/`;
+//     snippetURL += `_api/web/getFileByServerRelativeUrl('${fileURL}')/$value`;
 
-    console.log('fetchSnippet url:', snippetURL );
-    // const snippetURL = `https://tenant.sharepoint.com/sites/cdn/_api/web/getFileByServerRelativeUrl('${props.url}')/$value`;
-    // const snippetURL = props.ctx.pageContext.web.absoluteUrl + `/_api/web/getFileByServerRelativeUrl('${props.url}')/$value`;
-    let htmlFragment: string = (url) ? 
-    await ctx.spHttpClient.get(snippetURL, SPHttpClient.configurations.v1)
-    .then((response: SPHttpClientResponse) => {return response.text();})
-    :noContent;
+//     console.log('fetchSnippet url:', snippetURL );
+//     // const snippetURL = `https://tenant.sharepoint.com/sites/cdn/_api/web/getFileByServerRelativeUrl('${props.url}')/$value`;
+//     // const snippetURL = props.ctx.pageContext.web.absoluteUrl + `/_api/web/getFileByServerRelativeUrl('${props.url}')/$value`;
+//     let htmlFragment: string = (url) ? 
+//     await ctx.spHttpClient.get(snippetURL, SPHttpClient.configurations.v1)
+//     .then((response: SPHttpClientResponse) => {return response.text();})
+//     :noContent;
 
-    if ( htmlFragment !== noContent ) {
-      //Add an iframe around it
-      // htmlFragment = htmlFragment.split("'").join("\'");
-      htmlFragment = htmlFragment.split("'").join("\\'");
-      htmlFragment = `${iframePref}${htmlFragment}${iframeSuff}`;
-    }
-    console.log('fetchSnippet script:', htmlFragment );
-    return htmlFragment;
+//     if ( htmlFragment !== noContent ) {
+//       //Add an iframe around it
+//       // htmlFragment = htmlFragment.split("'").join("\'");
+//       htmlFragment = htmlFragment.split("'").join("\\'");
+//       htmlFragment = `${iframePref}${htmlFragment}${iframeSuff}`;
+//     }
+//     console.log('fetchSnippet script:', htmlFragment );
+//     return htmlFragment;
 
-  }
+//   }

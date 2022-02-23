@@ -18,7 +18,7 @@ import { update } from '@microsoft/sp-lodash-subset';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { approvedLibraries } from './components/ApprovedLibraries';
 
-import { fetchSnippet } from './loadDangerous';
+// import { fetchSnippet } from './loadDangerous';
 import { fetchSnippetMike } from './components/FetchCode';
 import { executeScript } from './components/EvalScripts';
 
