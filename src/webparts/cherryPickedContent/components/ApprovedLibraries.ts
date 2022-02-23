@@ -16,5 +16,12 @@ export const approvedLibraries = [
     siteRelativeURL: "/sites/PrivateCDN",
     library: "Site Assets",
     text: "Private CDN Site Assets"
-  }
+  },
+  {
+    key: "/sites/TestScriptandFiles/SiteAssets",
+    siteRelativeURL: "/sites/TestScriptandFiles",
+    library: "Site Assets",
+    text: "TestScriptandFiles Site Assets"
+  },
+
 ];

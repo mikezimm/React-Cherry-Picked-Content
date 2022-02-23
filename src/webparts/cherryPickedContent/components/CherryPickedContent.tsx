@@ -5,6 +5,8 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
+import { executeScript } from './EvalScripts';
+
 const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = (props) => {
 
   const message = props.libraryItemPicker? "Loading...":"Edit Web Part properties to select a file.";
@@ -33,7 +35,8 @@ const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = 
         const htmlFragment = await props.context.spHttpClient.get(snippetURLQuery, SPHttpClient.configurations.v1)
           .then((response: SPHttpClientResponse) => response.text());
         // : "<div>No content loaded.</div>";
-        const node = document.createRange().createContextualFragment(htmlFragment);
+        const newHtml = `<div id='thisReallyUniqueId'>${htmlFragment}<div>`;
+        const node = document.createRange().createContextualFragment(newHtml);
         setAppendedNode(node);
       }
       else {
@@ -41,6 +44,28 @@ const CherryPickedContent: React.FunctionComponent<ICherryPickedContentProps> = 
       }
     }
     fetchSnippet();
+
+    /**
+     * I think we just need to execute Script code here....
+     * https://daveceddia.com/react-hook-after-render/
+     */
+    console.log('props.domElement:', props.domElement );
+    /**
+     * We have to pass in the actual element with the fragment into executeScript
+     * This might help give a clue what we need to do
+     * https://javascript.tutorialink.com/how-to-get-actual-element-from-document-fragment/
+     */
+    //This did not work... scriptElement was undefined here
+    // let scriptElement = document.getElementById("thisReallyUniqueId");
+
+    //This did not work.... scriptElement was </section>
+    // let scriptElement = props.domElement.firstElementChild ;
+
+    //This also did not work because at the time of running it, it was using the defalultNode
+    let scriptElement = props.domElement.firstElementChild.firstElementChild ;
+    console.log('scriptElement:', scriptElement );
+    executeScript( scriptElement );
+
   }, [props.libraryPicker, props.libraryItemPicker]);
 
   return (

@@ -10,4 +10,5 @@ export interface ICherryPickedContentProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  domElement: any;
 }
